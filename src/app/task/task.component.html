@@ -1,0 +1,89 @@
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12">
+
+            <!-- Category cards -->
+
+            <div class="row">
+                <div class="col-md-3" *ngFor="let category of categories">
+
+                    <div class="card mb-4" (click)="showSubCategories(category)"
+                        [ngClass]="{ 'selected': category === selectedCategory }">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">{{ category.category }}</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!--SubCategory cards -->
+
+            <div class="row justify-content-center mt-4" *ngIf="selectedCategory">
+                <div class="col-md-3" *ngFor="let subCategory of selectedCategory.subCategory">
+
+                    <div class="card mb-4" (click)="showRoles(subCategory)"
+                        [ngClass]="{ 'selected': subCategory === selectedSubCategory }">
+
+                        <div class="card-body text-center">
+                            <h5 class="card-title-sub">{{ subCategory.label }}</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input Box -->
+
+
+            <div class="row justify-content-center mt-4" *ngIf="selectedSubCategory">
+                <div class="col-md-4 input-with-button">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Add roles"
+                            [disabled]="!selectedSubCategory" [(ngModel)]="enteredValue" #valueInput>
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button"
+                                (click)="addValue(valueInput.value); valueInput.value = ''">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <!-- Roles section -->
+            <div class="row justify-content-center mt-4"
+                *ngIf="selectedSubCategory && enteredValues[selectedSubCategory.label]?.length">
+                <div class="col-md-4">
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between align-items-center"
+                            *ngFor="let value of enteredValues[selectedSubCategory.label]; let i = index">
+                            {{ value }}
+                            <button type="button" class="btn btn-sm btn-danger"
+                                (click)="removeValue(selectedSubCategory.label, i)">
+                                <i class="bi bi-x"></i>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+
+            <!-- Toast section-->
+            <div class="position-fixed top-0 end-0 p-3">
+                <div class="toast align-items-center text-white bg-danger" role="alert" aria-live="assertive"
+                    aria-atomic="true" data-bs-autohide="false">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            Roles cannot be empty!
+                        </div>
+                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"
+                            aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
